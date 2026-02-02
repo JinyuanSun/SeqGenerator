@@ -52,12 +52,49 @@ as the training sequence.
    cluster_0001,REPSEQ,SEQ_B,342
    ```
 
-4. **Save the CSV files** under `datasets/<name>/` as:
+4. **Example conversion (standard library)**:
+   ```bash
+   python - <<'PY'
+   from collections import defaultdict
+
+   def read_fasta(path):
+       header = None
+       seq_chunks = []
+       with open(path, "r") as handle:
+           for line in handle:
+               line = line.strip()
+               if not line:
+                   continue
+               if line.startswith(">"):
+                   if header:
+                       yield header, "".join(seq_chunks)
+                   header = line[1:]
+                   seq_chunks = []
+               else:
+                   seq_chunks.append(line)
+           if header:
+               yield header, "".join(seq_chunks)
+
+   clusters = defaultdict(list)
+   for header, seq in read_fasta("train.fasta"):
+       cluster_id = header.split("|")[0]
+       clusters[cluster_id].append(seq)
+
+   with open("train.csv", "w") as out:
+       out.write("cluster,src,trg,len\n")
+       for cluster_id, seqs in clusters.items():
+           src = seqs[0]
+           for trg in seqs:
+               out.write(f"{cluster_id},{src},{trg},{len(trg)}\n")
+   PY
+   ```
+
+5. **Save the CSV files** under `datasets/<name>/` as:
    - `train.csv`
    - `valid.csv`
    - `test.csv`
 
-5. **Validate** the CSVs:
+6. **Validate** the CSVs:
    - Ensure there are no extra commas or spaces.
    - Confirm `len` matches the actual `trg` length.
    - Use UTF-8 encoding without quotes around the sequences.
@@ -95,7 +132,7 @@ cd scripts
 bash run_decode.sh
 ```
 Arguments explanation:
-- ```--model_dir```: the model obtained in the training stage, our trained model can be accessed [here](https://zenodo.org/records/10405049), for generating put the model and 'training_args.json' to this folder
+- ```--model_dir```: the model checkpoint obtained in the training stage (e.g., an `ema*.pt` file); our trained model can be accessed [here](https://zenodo.org/records/10405049), for generating put the model and 'training_args.json' to this folder
 - ```--seq_len_sample```: the generated sequence length is obtained by sampling the length of the natural sequences of this family
 - ```--max_len```: the maximum length of the generated sequence
 - ```--min_len```: the minimum length of the generated sequence
@@ -103,7 +140,7 @@ Arguments explanation:
 
 You can also use environment variables:
 ```bash
-MODEL_DIR=../diffusion_models/your_run/ema*.pt \
+MODEL_DIR=../diffusion_models/your_run/ema_00020000.pt \
 SEQ_LEN_SAMPLE=../datasets/aspartese/train.csv \
 MAX_LEN=490 \
 MIN_LEN=460 \
