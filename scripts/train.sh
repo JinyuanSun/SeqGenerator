@@ -65,4 +65,4 @@ python -m torch.distributed.launch \
   --notes "${NOTES}" \
   --model_path "${MODEL_PATH}" \
   --model_regression_path "${MODEL_REGRESSION_PATH}" \
-  "${EXTRA_ARGS[@]}"
+  ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}

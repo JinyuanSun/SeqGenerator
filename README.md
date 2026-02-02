@@ -132,7 +132,7 @@ cd scripts
 bash run_decode.sh
 ```
 Arguments explanation:
-- ```--model_dir```: the model checkpoint obtained in the training stage (e.g., an `ema*.pt` file); our trained model can be accessed [here](https://zenodo.org/records/10405049), for generating put the model and 'training_args.json' to this folder
+- ```--model_dir```: the model checkpoint obtained in the training stage (e.g., an `ema*.pt` file); our trained model can be accessed [here](https://zenodo.org/records/10405049). Ensure the checkpoint and its `training_args.json` live in the same folder because the script loads the JSON from the checkpoint directory.
 - ```--seq_len_sample```: the generated sequence length is obtained by sampling the length of the natural sequences of this family
 - ```--max_len```: the maximum length of the generated sequence
 - ```--min_len```: the minimum length of the generated sequence

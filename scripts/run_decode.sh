@@ -41,4 +41,4 @@ python -m torch.distributed.launch \
   --batch_size "${BATCH_SIZE}" \
   --out_dir "${OUT_DIR}" \
   --model_path "${ORG_MODEL}" \
-  "${EXTRA_ARGS[@]}"
+  ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}
