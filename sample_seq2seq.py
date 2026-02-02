@@ -168,7 +168,7 @@ def main():
                 sample_shape,
                 noise=x_noised,
                 clip_denoised=args.clip_denoised,
-                denoised_fn=partial(denoised_fn_round, args, model_emb_copy.cuda()),
+                denoised_fn=partial(denoised_fn_round, args, model_emb_copy.to(dist_util.dev())),
                 model_kwargs=model_kwargs,
                 top_p=args.top_p,
                 clamp_step=args.clamp_step,
@@ -194,7 +194,7 @@ def main():
 
 
             arr = np.concatenate(all_sentence, axis=0)
-            x_t = th.tensor(arr).cuda()
+            x_t = th.tensor(arr).to(dist_util.dev())
 
 
             reshaped_x_t = x_t

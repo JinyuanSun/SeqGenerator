@@ -368,7 +368,7 @@ class Logger(object):
                 d["dummy"] = 1  # so we don't get a warning about empty dict
         # LISA
         out = d.copy()  # Return the dict for unit testing purposes
-        if int(os.environ['LOCAL_RANK']) == 0:
+        if int(os.environ.get("LOCAL_RANK", "0")) == 0:
             #wandb.log({**d})
             for fmt in self.output_formats:
                 if isinstance(fmt, KVWriter):
@@ -496,4 +496,3 @@ def scoped_configure(dir=None, format_strs=None, comm=None):
     finally:
         Logger.CURRENT.close()
         Logger.CURRENT = prevlogger
-
