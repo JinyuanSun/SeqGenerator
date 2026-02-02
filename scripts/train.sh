@@ -34,7 +34,7 @@ TIMESTAMP="$(date +"%Y%m%d-%H%M%S")"
 MODEL_DIR="${ROOT_DIR}/diffusion_models"
 RUN_NAME="diffuseq_${DATASET}_lr${LR}_t${DIFF_STEPS}_${NOISE_SCHEDULE}_${SCHEDULE_SAMPLER}_seed${SEED}"
 if [[ -n "${NOTES}" ]]; then
-  RUN_NAME="${RUN_NAME}_${NOTES}${TIMESTAMP}"
+  RUN_NAME="${RUN_NAME}_${NOTES}_${TIMESTAMP}"
 fi
 CHECKPOINT_PATH="${MODEL_DIR}/${RUN_NAME}"
 

@@ -10,6 +10,7 @@ SEQ_LEN_SAMPLE="${SEQ_LEN_SAMPLE:-${ROOT_DIR}/datasets/aspartese/train.csv}"
 MAX_LEN="${MAX_LEN:-490}"
 MIN_LEN="${MIN_LEN:-460}"
 SEQ_NUM="${SEQ_NUM:-500}"
+# sample_seq2seq.py expects --seed2, so keep this name for compatibility.
 SEED="${SEED:-123}"
 SPLIT="${SPLIT:-test}"
 STEP="${STEP:-2000}"
