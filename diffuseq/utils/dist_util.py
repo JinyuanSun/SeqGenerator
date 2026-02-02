@@ -43,7 +43,8 @@ def dev():
     Get the device to use for torch.distributed.
     """
     if th.cuda.is_available():
-        return th.device(f"cuda:{os.environ['LOCAL_RANK']}")
+        rank = os.environ.get("LOCAL_RANK", "0")
+        return th.device(f"cuda:{rank}")
     return th.device("cpu")
 
 
@@ -67,10 +68,7 @@ def sync_params(params):
 
 
 def _find_free_port():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s.getsockname()[1]
-    finally:
-        s.close()

@@ -38,7 +38,7 @@ class myTokenizer():
             self.sep_token_id = vocab_dict['[END]']
             self.pad_token_id = vocab_dict['[PAD]']
             # save
-            if int(os.environ['LOCAL_RANK']) == 0:
+            if int(os.environ.get("LOCAL_RANK", "0")) == 0:
                 path_save_vocab = f'{args.checkpoint_path}/vocab.json'
                 with open(path_save_vocab, 'w') as f:
                     json.dump(vocab_dict, f)
